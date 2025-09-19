@@ -1,7 +1,9 @@
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using TimeElapsingInscryption.Config;
 using TimeElapsingInscryption.Patches;
+using TimeElapsingInscryption.Util.HandleStampReturns;
 
 namespace TimeElapsingInscryption
 {
@@ -19,6 +21,9 @@ namespace TimeElapsingInscryption
         public void Awake()
         {
             harmony.PatchAll(typeof(DialougeParserPatches));
+            CreateStorage.Config = Config;
+            CreateStorage.Init();
+            BasicStampTimeUnits.InstantiateTimeHolders();
         }
     }
 }

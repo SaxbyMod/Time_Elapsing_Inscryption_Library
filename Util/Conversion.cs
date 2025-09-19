@@ -6,11 +6,6 @@
 		{
 			switch (Type.ToLower())
 			{
-				case "ms":
-				case "millisecond":
-				case "milliseconds":
-					Type = "Milliseconds";
-					break;
 				case "s":
 				case "second":
 				case "seconds":

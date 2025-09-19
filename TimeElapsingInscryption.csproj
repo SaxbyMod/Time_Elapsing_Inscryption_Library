@@ -34,6 +34,9 @@
         <Reference Include="TimeElapsingConsolePlugin">
             <HintPath>Lib\TimeElapsingConsolePlugin.dll</HintPath>
         </Reference>
+        <Reference Include="MonoMod">
+            <HintPath>Lib\MonoMod.dll</HintPath>
+        </Reference>
 		<Reference Include="Sirenix.Serialization">
 			<HintPath>lib\Sirenix.Serialization.dll</HintPath>
 			<Publicize>true</Publicize>

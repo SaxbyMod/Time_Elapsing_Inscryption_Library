@@ -3,35 +3,35 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using TimeElapsingInscryption.Patches;
+using TimeElapsingInscryption.Util.HandleStampReturns;
 
 namespace TimeElapsingInscryption.Util
 {
 	public class GetSoughtTimestampClass
 	{
-		public static (string, int) GetSoughtTimestamp(string dialougeCode, string ID)
+		public static string GetSoughtTimestamp(string dialogueCode, string ID)
 		{
-			dialougeCode = dialougeCode.Replace("[timestamp:", "").Replace("]", "");
-			List<string> codePieces = dialougeCode.Split(';').ToList();
-			int Length = 0;
-			string Type = "Nan";
-			if (codePieces.Count == 1)
+			if (!dialogueCode.StartsWith($"[{DialougeParserPatches.TimestampCodeBase}"))
+				return dialogueCode;
+			
+			dialogueCode = dialogueCode.Replace("[", "").Replace("]", "").Substring(DialougeParserPatches.TimestampCodeBase.Length);
+			var splitMessage = dialogueCode.Split(':');
+			string msg = "";
+			if (splitMessage.Length >= 3)
 			{
-				Console.Write(GetColorFromTypeFunctions.GetColorFromString("Red", "Highlighted") + "ERROR; Not enough pieces for the timestamp to register, it requires 2 pieces split by a ';'." + ANSICodeLists.ResetColor);
-			}
-			else
-			{
-				try
+				var type = splitMessage[1];
+				var time = splitMessage[2];
+				
+				// Printed String;
+				if (type == "Seconds" || type == "Hours" || type == "Minutes" || type == "Ticks" || type == "Days")
 				{
-					Length = int.Parse(codePieces[0]);
-				}
-				catch
-				{
-					Console.Write(GetColorFromTypeFunctions.GetColorFromString("Red", "Highlighted") + "ERROR; The first piece must be a valid integer." + ANSICodeLists.ResetColor);
-					Type = Conversion.SwitchType(Type);
+					msg = BasicStampTimeUnits.Initialize(type, time);
 				}
 			}
 			
-			return (Type, Length);
+			return msg;
 		}
 	}
 }
